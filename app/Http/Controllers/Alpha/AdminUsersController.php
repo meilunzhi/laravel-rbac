@@ -54,6 +54,10 @@ class AdminUsersController extends AdminController
         $userInfo           = $adminUserModel->checkLogin($name , $encrypt_password);
 
         if($userInfo){
+			//获取登录用户的权限
+
+			$userInfo->permissions = $adminUserModel->getAdminUserPermissions($userInfo->id);
+
             $sessionKey = $this->getSalt(16);
             Session::put($sessionKey , $userInfo);
             return redirect('alpha/index')-> withCookie(cookie(Config::get('session.web_login_cookie') , $sessionKey , Config::get('session.lifetime')));

@@ -24,7 +24,7 @@ class IndexController extends AdminController
     }
 
     public function index() {
-        return view('admin.index.index' , $this->response);
+        return view('alpha.index.index' , $this->response);
     }
 
 }

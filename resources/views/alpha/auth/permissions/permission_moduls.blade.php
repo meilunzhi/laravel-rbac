@@ -26,7 +26,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 col-sm-2 control-label">地址</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name='name' placeholder="点连接;如admin.user.index" />
+									<input type="text" class="form-control" name='name' placeholder=" / 连接;如/alpha/admin/user" />
 								</div>
 							</div>
 							<div class="form-group">

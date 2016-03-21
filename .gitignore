@@ -6,3 +6,5 @@ Homestead.json
 .env
 /storage
 composer.lock
+*.swp
+*.swo

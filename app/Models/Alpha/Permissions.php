@@ -16,6 +16,40 @@ class Permissions extends Model
     protected $_table = 'permissions';
 
 	/**
+	 * 获取登录用户可访问的菜单
+	 */
+	public function getAdminUserMenu( $userId ) {
+		$permissions = DB::table('admin_user_roles as ur')
+			->join('permission_roles as pr' , 'pr.role_id' , '=' , 'ur.role_id')
+			->join('permissions as p' , 'p.id' , '=' , 'pr.permission_id')
+			->where('is_menu' , '1')
+			->where('admin_user_id' , $userId)
+			->get();
+
+		$parent = array();
+		$child = array();
+		foreach($permissions as $p){
+			if($p->fid == 0){
+				$parent[] = $p;
+			}else{
+				$child[] = $p;
+			}
+				
+		}
+
+		foreach($parent as $p){
+			$p->child = array();
+			foreach($child as $c){
+				if($c->fid == $p->id){
+					$p->child[] = $c;
+				}
+			}
+		}
+
+		return $parent;
+	}
+
+	/**
 	 * 获取节点列表
 	 */
 	public function getPermissionsList() {
@@ -25,7 +59,6 @@ class Permissions extends Model
 		foreach($parent as $p){
 			$p->child = array();
 			foreach($child as $c){
-				$c->url = '/' . implode('/' , explode('.' , $c->name));
 				if($c->fid == $p->id){
 					$p->child[] = $c;
 				}

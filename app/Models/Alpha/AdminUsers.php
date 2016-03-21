@@ -9,6 +9,27 @@ class AdminUsers extends Model
 {
     protected $_table = 'admin_users';
 
+	/**
+	 * 获取用户权限列表
+	 */
+	public function getAdminUserPermissions($userId){
+		$permissions = DB::table('admin_user_roles as ur')
+			->join('permission_roles as pr' , 'pr.role_id' , '=' , 'ur.role_id')
+			->join('permissions as p' , 'p.id' , '=' , 'pr.permission_id')
+			->where('admin_user_id' , $userId)
+			->get();
+
+		$data = array();
+		foreach($permissions as $p){
+			if(!empty($p->name)){
+				$data[] = $p->name;
+			}
+		}
+
+		return $data;
+
+	}
+
     /**
      * @param $tel
      * @return mixed
