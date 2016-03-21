@@ -15,39 +15,11 @@ class AdminController extends Controller
         $this->response['title']		= '标题';
         $this->response['menuactive']	= 'qxgl';
 
-		$this->_isLogin();
+		global $userId;
+
+		$this->_getMenu($userId);
 
     }
-
-	//判断是否登录
-	private function _isLogin(){
-		$sessionkey = cookie::get(config::get('session.web_login_cookie'));
-		$userInfo = session::get($sessionkey);
-		if(!isset($userInfo->id)){
-            return redirect('alpha/login');
-		}
-		$this->_getMenu($userInfo->id);
-		$this->_isHaveAuth();
-	}
-
-	/**
-	 * 判断是否有权限访问
-	 */
-	private function _isHaveAuth(){
-		$sessionkey = cookie::get(config::get('session.web_login_cookie'));
-		$userInfo = session::get($sessionkey);
-		if(!isset($userInfo->id)){
-            return redirect('/alpha/login');
-		}
-
-		$permissions = $userInfo->permissions;
-		$nowUrl = $_SERVER['REQUEST_URI'];
-
-		if(!in_array($nowUrl , $permissions)){
-			return redirect('alpha/roles');
-		}
-
-	}
 
 	//获取分页数据
 	public function getPageData($page , $length , $totalNum){

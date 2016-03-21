@@ -19,10 +19,14 @@ class CheckAuth
     {
 		$sessionkey = cookie::get(config::get('session.web_login_cookie'));
 		$userInfo = session::get($sessionkey);
+		
 		if(!isset($userInfo->id)){
             return redirect('alpha/login');
 		}
 		
+		global $userId;
+		$userId  = $userInfo->id;
+
 		$nowUrl = $request->requestUri;
 		$permissions = $userInfo->permissions;
 
